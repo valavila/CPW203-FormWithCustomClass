@@ -53,6 +53,26 @@ function getVideoGame():VideoGame{
 
 
 function displayGame(myGame: VideoGame):void{
+    let displayDiv = get("display");
+    // Create h2 with game title
+    let gameHeading = document.createElement("h2");
+    gameHeading.innerText = myGame.title;
+    
+    // Create <p> with game details
+    let gameInfo = document.createElement("p");
+    let notDigitalDisplay = "";
+    if(myGame.isDigitalOnly){
+        notDigitalDisplay = "not"
+    }
+    //gameInfo.innerText = myGame.title + " has a rating of" + myGame.rating + ". It costs " + myGame.price
+     //                   + ". It is " + notDigitalDisplay + " digital only."
+    gameInfo.innerText = `${myGame.title} has a rating of ${myGame.rating}. It costs ${myGame.price}.
+                    It is ${notDigitalDisplay} digital only.`;
+    // add h2 in the div display
+    displayDiv.appendChild(gameHeading);
+
+    // add <p> game info
+    displayDiv.appendChild(gameInfo)
     //TODO: display video game before the form
 
 }
