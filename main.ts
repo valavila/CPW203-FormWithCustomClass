@@ -14,7 +14,16 @@ window.onload = function(){
     let addBtn = <HTMLElement>document.querySelector("input[type= button]");
     addBtn.onclick = addVideoGame;
 }
+/**
+ * Clears all errors in the validatin summary
+ */
+function clearAllErrors(){
+    let errSummary = get("validation-summary")
+    errSummary.innerText = "";
+}
+
 function addVideoGame(){
+    clearAllErrors();
     if(isAllDataValid()){
         let game = getVideoGame();
         displayGame(game);
@@ -51,7 +60,9 @@ function getVideoGame():VideoGame{
     return game;
 }
 
-
+/**
+ *  Displays game and summary on webpage
+ */
 function displayGame(myGame: VideoGame):void{
     let displayDiv = get("display");
     // Create h2 with game title
@@ -61,7 +72,7 @@ function displayGame(myGame: VideoGame):void{
     // Create <p> with game details
     let gameInfo = document.createElement("p");
     let notDigitalDisplay = "";
-    if(myGame.isDigitalOnly){
+    if(!myGame.isDigitalOnly){
         notDigitalDisplay = "not"
     }
     //gameInfo.innerText = myGame.title + " has a rating of" + myGame.rating + ". It costs " + myGame.price
@@ -77,7 +88,40 @@ function displayGame(myGame: VideoGame):void{
 
 }
 
-// ADD VALIDATION CODE ********
-function isAllDataValid(){
-    return true;
+function getInputById(id: string):HTMLInputElement{
+    return <HTMLInputElement>document.getElementById(id);
 }
+
+function isAllDataValid(){
+    let isValid = true;
+
+    let title = getInputById("title").value
+    if(title == ""){
+        isValid = false;
+        AddErrorMessage("Title is required");
+    }
+
+    let price = getInputById("price").value
+    let priceValue = parseFloat(price);
+    if(price == "" || isNaN(priceValue)){
+        isValid = false;
+        AddErrorMessage("Price is required and must be a number")
+    }
+
+    let rating = (<HTMLOptionElement>get("rating")).value
+    if(rating == ""){
+        isValid = false;
+        AddErrorMessage("Choose rating");
+    }
+
+    return isValid;
+                       
+
+}
+function AddErrorMessage(errMessage:string) {
+    let errSummary = get("validation-summary");
+    let errItem = document.createElement("li");
+    errItem.innerText = errMessage;
+    errSummary.appendChild(errItem);
+}
+
