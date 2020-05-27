@@ -28,6 +28,17 @@ function addVideoGame(){
         let game = getVideoGame();
         displayGame(game);
     }
+    else{
+        displayRatingsLink();
+    }
+}
+
+function displayRatingsLink(){
+    let ratingsElements = document.querySelectorAll(".rating-error");
+    for(let i = 0; ratingsElements.length ; i++){
+        let currElem = ratingsElements[i];
+        currElem.innerHTML +=  "<a target = _blank href= 'https://www.esrb.org'>Click here for info </a> ";
+    }
 }
 
 /**
@@ -91,7 +102,9 @@ function displayGame(myGame: VideoGame):void{
 function getInputById(id: string):HTMLInputElement{
     return <HTMLInputElement>document.getElementById(id);
 }
-
+/**
+ * validates data entered on form and display any error messages
+ */
 function isAllDataValid(){
     let isValid = true;
 
@@ -111,16 +124,27 @@ function isAllDataValid(){
     let rating = (<HTMLOptionElement>get("rating")).value
     if(rating == ""){
         isValid = false;
-        AddErrorMessage("Choose rating");
+        AddErrMsgWithCustomClass("Must choose rating ", "rating-error");
     }
 
     return isValid;
                        
 
 }
+/**
+ * displays error message on webpage
+ */
 function AddErrorMessage(errMessage:string) {
     let errSummary = get("validation-summary");
     let errItem = document.createElement("li");
+    errItem.innerText = errMessage;
+    errSummary.appendChild(errItem);
+}
+
+function AddErrMsgWithCustomClass(errMessage:string, cssClass:string) {
+    let errSummary = get("validation-summary");
+    let errItem = document.createElement("li");
+    errItem.classList.add(cssClass)
     errItem.innerText = errMessage;
     errSummary.appendChild(errItem);
 }
